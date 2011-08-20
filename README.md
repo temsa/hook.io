@@ -51,6 +51,30 @@ Now run:
      
 Spawn up as many as you want. The first one becomes a server, the rest will become clients. Each helloworld hook emits a hello on an interval. Now watch the i/o party go!     
 
+# Running a hook on a different port and/or host
+
+/!\ On hook.io<=0.6.1 default host was 'localhost' (equivalent to '127.0.0.1', so you could not connect from another computer) and you could not connect to a distant host !
+
+By default hooks are running on host '0.0.0.0' (means open on any network interface) and running on port '5000'.
+
+You can change the port/host thanks to:
+* the 'port'/'host' options while instanciating the hook
+* directly using the --hook-port/--hook-host argument when starting your hook script.
+* using the host and port option in the config.json
+
+Examples (using any, hook, here represented as 'hook-myhook'):
+
+* Running on localhost:4999, but restricted to loopback network (coming from 127.0.0.x):
+
+     hookio-myhook --hook-port 4999 --hook-host localhost
+
+* Running on a distant host 'foo' on default port:
+
+     hookio-myhook --hook-host foo
+
+* Running on every network interface on port 4000:
+
+     hookio-myhook --hook-port 4000
 
 # Blog Posts
 
@@ -72,7 +96,7 @@ All tests are written with [vows][7] and require that you link hook.io to itself
 Marak Squires, Charlie Robbins, Jameson Lee
 
 ## Contributors (through code and advice)
-Substack, h1jinx, AvianFlu, Chapel, Dominic Tarr, Tim Smart, tmpvar, kadir pekel, perezd
+Substack, h1jinx, AvianFlu, Chapel, Dominic Tarr, Tim Smart, tmpvar, kadir pekel, perezd, temsa
 
 [0]: http://groups.google.com/group/hookio
 [1]: http://socket.io
