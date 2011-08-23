@@ -18,8 +18,8 @@ vows.describe('hook.io/spawn/multiple-spawn').addBatch({
       hook.once('hook::listening', this.callback.bind(null, null, hook));
       hook.listen();
     },
-    "hook will be listening" : function (ign, hook, port) { 
-      assert.equal(hook['hook-port'], port);
+    "hook will be listening" : function (ign, hook, hostAndPort) { 
+      assert.equal(hostAndPort, hook['hook-host']+':'+hook['hook-port'] );
     },
     "and you do some stuff" : {
       topic: function (hook, port) {
