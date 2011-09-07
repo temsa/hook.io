@@ -1,7 +1,7 @@
 {
   "author": "Marak Squires <marak.squires@gmail.com>",
   "name": "hook.io",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "repository": {
     "type": "git",
     "url": "git://github.com/hookio/hook.io.git"
@@ -17,6 +17,9 @@
     }
   ],
   "main": "./lib/hookio",
+  "bin": {
+     "hookio": "./bin/hookio"
+   },
   "engines": {
     "node": ">= v0.4.7"
   },
@@ -26,7 +29,7 @@
     "dnode": "0.7.x",
     "eventemitter2": "0.4.x",
     "optimist": "0.2.x",
-    "nconf": "0.2.x"
+    "nconf": "0.3.x"
   },
   "scripts": {
     "test": "vows test/**/*-test.js --isolate --spec"
