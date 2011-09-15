@@ -7,7 +7,7 @@
 
     a full featured i/o framework for node.js
     
-# v0.6.0
+# v0.7.2
 
 ## hook.io creates a distributed node.js EventEmitter that works cross-process / cross-platform / cross-browser. Think of it like a real-time event bus that works anywhere JavaScript is supported.
 
@@ -29,7 +29,8 @@
 
 # Available Hooks (more coming soon)
 
-- [cron](http://github.com/hookio/cron): Execute Hook Events as Tasks
+- [cron](http://github.com/hookio/cron): Adds and removes jobs that emit hook.io events on a schedule
+- [couch](http://github.com/hookio/couch): Emit hook.io events based on your CouchDB _changes feed
 - [irc](http://github.com/hookio/irc): Full IRC bindings
 - [helloworld](http://github.com/hookio/helloworld)
 - [logger](http://github.com/hookio/logger): Multi-transport Logger (Console, File, Redis, Mongo, Loggly)
@@ -39,7 +40,7 @@
 - [repl](http://github.com/hookio/repl): Rainbow Powered REPL
 - [twilio](http://github.com/hookio/twilio): Make calls and send SMS through [Twilio][5]
 - [twitter](http://github.com/hookio/twitter): Wrapper to Twitter API
-- [webhook](http://github.com/hookio/webhook): Emits received HTTP requests as Events (with optional JSON-RPC 1.0 Support)
+- [webhook](http://github.com/hookio/webhook): Emits received HTTP requests as hook.io events (with optional JSON-RPC 1.0 Support)
 
 # Getting Start / Demo
 

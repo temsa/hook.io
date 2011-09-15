@@ -14,7 +14,7 @@ var vows = require('vows'),
     macros = require('../helpers/macros');
     
 vows.describe('hook.io/siblings/message').addBatch({
-  "When a hook is listening on 5050": macros.assertListen('simple-server', 5002, {
+  "When a hook is listening on 5002": macros.assertListen('simple-server', 5002, {
     "and another hook connects": macros.assertConnect('simple-subscriber', 5002, {
       "and emits *::test": {
         topic: function (subscriber) {
