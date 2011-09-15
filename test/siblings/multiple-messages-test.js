@@ -20,7 +20,7 @@ var vows = require('vows'),
 
 
 // The local fixture, map to browser/hook.js
-var fixture = fs.readFileSync(path.join(__dirname, '../../browser/hook.js')).toString();
+var fixture = fs.readFileSync(path.join(__dirname, '../fixtures/bigfile')).toString();
 
 // create a local macro
 // TODO: see if it's better to put this in helpers/macros
