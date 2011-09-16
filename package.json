@@ -1,7 +1,7 @@
 {
   "author": "Marak Squires <marak.squires@gmail.com>",
   "name": "hook.io",
-  "version": "0.7.99-allinone",
+  "version": "0.7.99-2-allinone",
   "repository": {
     "type": "git",
     "url": "git://github.com/hookio/hook.io.git"
