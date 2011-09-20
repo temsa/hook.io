@@ -4,7 +4,8 @@ var Hook = require('../lib/hookio').Hook;
 
 var hook = new Hook( {
   name: 'the-test-hook',
-  debug: true
+  debug: false
 });
+
 
 hook.start();

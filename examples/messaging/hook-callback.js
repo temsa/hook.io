@@ -2,9 +2,9 @@
  * Creates a helloworld hook, then spawns three helloworld children
  */
 
-var Hook = require('../lib/hookio').Hook;
+var Hook = require('../../lib/hookio').Hook;
 
-var pingPongModule = require('../test/fixtures/pingPongModule.js');
+var pingPongModule = require('../../test/fixtures/pingPongModule.js');
 
 var hook1 = new Hook({ 
   name: "server-hook",
@@ -16,11 +16,17 @@ var hook2 = new Hook({
 
 
 hook1.on('*::hello', function(data, callback){
+
   //
-  // this.callback is the callback for this event,
+  // callback is the callback for this event,
   // should it exist
   //
-  callback(null, data);
+  var result = {
+    "text": "Why hello there!"
+  };
+  
+  callback(null, result);
+
 })
 
 hook1.on('hook::ready', function(){

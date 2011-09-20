@@ -13,21 +13,38 @@ var vows = require('vows'),
 vows.describe('hook.io/discovery/client-details').addBatch({
   "When a Hook is listening on port 5011 with 2 client hooks": {
     topic : function() {
-      var server = new Hook({name:'server', type: 'test'});
+
+      var server = new Hook({
+        name:'server',
+        type: 'test'
+      });
+
       var self = this;
-      
+
       server.on('hook::listening', function() {
-        var client1 = new Hook({ name: 'client1', type: 'test'});
-        client1.start({"hook-port":5011});
-        
-        var client2 = new Hook({ name: 'another-client', type: 'another-test'});
-        client2.on('hook::ready', function onReady () {
-          self.callback(null, server, client1, client2)         // should add a timeout using addTimeout for handling errors ?
+
+        var client1 = new Hook({
+          name: 'client',
+          type: 'test'
         });
 
-        client2.start({"hook-port":5011});
+        client1.start({ "hook-port": 5011 });
+
+        var client2 = new Hook({
+          name: 'another-client',
+          type: 'another-test'
+        });
+        
+        client2.on('hook::ready', function onReady () {
+          // should add a timeout using addTimeout for handling errors ?
+          self.callback(null, server, client1, client2);
+        });
+
+        client2.start({ "hook-port": 5011 });
+
       });
-      server.start({"hook-port":5011});
+
+      server.start({ "hook-port": 5011 });
     },/*
 */
     "and the *server hook* emits *hookDetails* asking for details": {
@@ -50,36 +67,41 @@ vows.describe('hook.io/discovery/client-details').addBatch({
           }});
       })
     },
-		"and a *client hook* emits *hookDetails* asking for details": {
+    "and a *client hook* emits *query* asking for details": {
       "about *itself* by *name*": checkDetails(function (server, client, client2) {
           var self = this;
-          client.emit('hookDetails', {name : client.name, callback: function onDetails (err, details) {
-            self.callback(err, details, server, client, client2);
-          }});
+          client.emit('query', {
+            name : client.name
+          }, this.callback);
       }),
       "about the *server* by *name*": checkDetails(function (server, client, client2) {
           var self = this;
-          client.emit('hookDetails', {name : server.name, callback: function onDetails (err, details) {
-            self.callback(err, details, server, client, client2);
-          }});
+          client.emit('query', {
+            name : server.name
+          }, this.callback);
       }),
       "about all hooks of type *test*": checkMultipleDetails(function (server, client, client2) {
           var self = this;
-          client.emit('hookDetails', {type : 'test', callback: function onDetails (err, details) {
-            self.callback(err, details, server, client, client2);
-          }});
+          client.emit('query', {
+            type : 'test'
+          }, this.callback);
       }, ['server','client1']),
       "about all hooks on host *127.0.0.1*": checkMultipleDetails(function (server, client, client2) {
           var self = this;
-          client.emit('hookDetails', {host : '127.0.0.1', callback: function onDetails (err, details) {
-            self.callback(err, details, server, client, client2);
-          }});
+          client.emit('query', {
+            host : '127.0.0.1'
+          }, this.callback);
       }, ['server','client1', 'another-client']),
-      "about all hooks on host *localhost*": checkMultipleDetails(function (server, client, client2) {
+      "about all hooks on host *127.0.0.1*": checkMultipleDetails(function (err, server, client, client2) {
           var self = this;
-          client.emit('hookDetails', {host : 'localhost', callback: function onDetails (err, details) {
-            self.callback(err, details, server, client, client2);
-          }});
+          client.emit('query', {
+            host : '127.0.0.1'
+          }, this.callback);
+    "and the *server hook* emits *query* asking for details": {
+          server.emit('query', {
+            name : server.name
+          }, function (err, details) {
+          });
       }, ['server','client1', 'another-client'])
     }
 	}

@@ -19,8 +19,10 @@ var vows = require('vows'),
     EventEmitter = require('events').EventEmitter;
 
 
-// The local fixture, map to browser/hook.js
+//
 var fixture = fs.readFileSync(path.join(__dirname, '../fixtures/bigfile')).toString();
+//
+var fixture = "foobar";
 
 // create a local macro
 // TODO: see if it's better to put this in helpers/macros
@@ -61,7 +63,7 @@ macro.multipleSubscriber = function(prefix, count) {
           self = this,
           length = count - 1;
 
-      listener.connect({ 'hook-port': 5002 });
+      listener.connect({ 'hook-port': 5052 });
       listener.on('*::test::*::*', function log () {
         if(--length === 0) self.callback();
       });
@@ -73,7 +75,7 @@ macro.multipleSubscriber = function(prefix, count) {
   };
 
   while(--test) {
-    context["to emit *::" + prefix + test] = macro(prefix + test, 5002);
+    context["to emit *::" + prefix + test] = macro(prefix + test, 5052);
   }
 
   return context;
@@ -82,7 +84,7 @@ macro.multipleSubscriber = function(prefix, count) {
 
 // Start the batch with a with a predefined number of cycles
 vows.describe('hook.io/siblings/multiple-message').addBatch({
-  "When a hook is listening on 5050": macros.assertListen('simple-server', 5002, {
+  "When a hook is listening on 5050": macros.assertListen('simple-server', 5052, {
     "and another hooks connects": macro.multipleSubscriber('test::foo::', 10)
   })
 }).export(module);

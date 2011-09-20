@@ -7,13 +7,15 @@
 
     a full featured i/o framework for node.js
     
-# v0.7.2
+# v0.7.4
 
 ## hook.io creates a distributed node.js EventEmitter that works cross-process / cross-platform / cross-browser. Think of it like a real-time event bus that works anywhere JavaScript is supported.
 
 ## You create custom i/o scenarios by picking and choosing from an extensive library of tiny, independent, autonomous "hooks" that seamlessly work together.
 
 ### Email List: [http://groups.google.com/group/hookio][0]
+
+### 20 Video lessons available at: [http://youtube.com/maraksquires](http://youtube.com/maraksquires) and [http://github.com/hookio/tutorials](http://github.com/hookio/tutorials)
 
 # Features :
 
@@ -97,7 +99,7 @@ All tests are written with [vows][7] and require that you link hook.io to itself
 Marak Squires, Charlie Robbins, Jameson Lee
 
 ## Contributors (through code and advice)
-Substack, h1jinx, AvianFlu, Chapel, Dominic Tarr, Tim Smart, tmpvar, kadir pekel, perezd, temsa
+Substack, h1jinx, AvianFlu, Chapel, Dominic Tarr, Tim Smart, tmpvar, kadir pekel, perezd, mklabs, temsa
 
 [0]: http://groups.google.com/group/hookio
 [1]: http://socket.io
