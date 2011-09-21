@@ -2,15 +2,17 @@
  * Simple example for basic Hook.emit syntax
  */
 
-var Hook = require('../../lib/hookio').Hook;
+var Hook = require('../../../lib/hookio').Hook;
 
 
 var hook1 = new Hook({ 
   name: "server-hook",
+  debug: true
 });
 
 var hook2 = new Hook({ 
   name: "callback-hook",
+  debug: true
 });
 
 hook1.on('*::hello', function(data, callback){

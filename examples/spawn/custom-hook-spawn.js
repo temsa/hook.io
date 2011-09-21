@@ -5,7 +5,10 @@
 var Helloworld = require('hook.io-helloworld').Helloworld;
 
 
-var myHello = new Helloworld({name:"a"});
+var myHello = new Helloworld({
+  name: "a",
+  debug: true
+});
 
 myHello.on('hook::ready', function(){
 
