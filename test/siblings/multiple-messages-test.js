@@ -33,15 +33,16 @@ var macro = function(event, port){
       var messager = new Hook({ name: 'simple-client-messager' });
 
       server.once('*::' + event, function(data) {
-        server.emit('response.' + event, data);
+        server.emit('foo::response.' + event, data);
       });
 
       messager.once('*::response.' + event, this.callback.bind(server, null));
 
-      messager.connect({ 'hook-port': port });
       messager.once('hook::connected', function () {
         messager.emit(event, {content: fixture});
       });
+      messager.connect({ 'hook-port': port });
+
     }
   };
 
@@ -63,10 +64,11 @@ macro.multipleSubscriber = function(prefix, count) {
           self = this,
           length = count - 1;
 
-      listener.connect({ 'hook-port': 5052 });
       listener.on('*::test::*::*', function log () {
         if(--length === 0) self.callback();
       });
+      listener.connect({ 'hook-port': 5052 });
+
     },
 
     "should be able to listen each of the emitted event": function() {
