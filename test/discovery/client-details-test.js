@@ -13,94 +13,89 @@ var vows = require('vows'),
 vows.describe('hook.io/discovery/client-details').addBatch({
   "When a Hook is listening on port 5011 with 2 client hooks": {
     topic : function() {
-
-      var server = new Hook({
-        name:'server',
-        type: 'test'
-      });
-
+      var server = new Hook({name:'server', type: 'test'});
       var self = this;
 
+server.onAny(function(data) {console.log( server.name.red, 'onAny'.red, '[', server.event.rainbow, ']', 'data'.green, data)});
+      
       server.on('hook::listening', function() {
+        var client1 = new Hook({ name: 'client1', type: 'test'});
+        client1.start({"hook-port":5011});
 
-        var client1 = new Hook({
-          name: 'client',
-          type: 'test'
+client1.onAny(function(data) {console.log( client1.name.green, 'onAny'.red, '[', client1.event.rainbow, ']', 'data'.green, data)});
+
+        var client2 = new Hook({ name: 'spawner-client', type: 'spawner'});
+
+        client2.start({"hook-port":5011});
+client2.onAny(function(data) {console.log( client2.name.cyan, 'onAny'.red, '[', client2.event.rainbow, ']', 'data'.green, data)});
+
+        client2.spawn([
+          {
+            type: 'hook',
+            name: 'spawned-client-a',
+            port: 5011
+          },
+          {
+            type: 'hook',
+            name: 'spawned-client-b',
+            port: 5011
+          }
+        ], function onReady (err) {
+          self.callback(err, server, client1, client2);        // should add a timeout using addTimeout for handling errors ?
         });
-
-        client1.start({ "hook-port": 5011 });
-
-        var client2 = new Hook({
-          name: 'another-client',
-          type: 'another-test'
-        });
-        
-        client2.on('hook::ready', function onReady () {
-          // should add a timeout using addTimeout for handling errors ?
-          self.callback(null, server, client1, client2);
-        });
-
-        client2.start({ "hook-port": 5011 });
-
       });
-
-      server.start({ "hook-port": 5011 });
-    },/*
-*/
-    "and the *server hook* emits *hookDetails* asking for details": {
+      server.start({"hook-port":5011});
+    },
+    "and the *server hook* emits *query* asking for details": {
       "about *itself* by *name*": checkDetails(function (server, client, client2) {
           var self = this;
-          server.emit('hookDetails', {name : server.name, callback: function onDetails (err, details) {
+          server.emit('query', {name : server.name}, function onDetails (err, details) {
+console.log('onDetails'.magenta, arguments)
             self.callback(err, details, server, client, client2);
-          }});
+          });
       }),
 			"about *the 1st client* by *name*": checkDetails(function (server, client, client2) {
           var self = this;
-					server.emit('hookDetails', {name : client.name, callback: function onDetails (err, details) {
+					server.emit('query', {name : client.name}, function onDetails (err, details) {
             self.callback(err, details, server, client, client2);
-          }});
+          });
       }),
 			"about *the 2nd client* by *name*": checkDetails(function (server, client, client2) {
           var self = this;
-          server.emit('hookDetails', {name : client2.name, callback: function onDetails (err, details) {
+          server.emit('query', {name : client2.name}, function onDetails (err, details) {
             self.callback(err, details, server, client, client2);
-          }});
+          });
       })
     },
-    "and a *client hook* emits *query* asking for details": {
+		"and a *client hook* emits *query* asking for details": {
       "about *itself* by *name*": checkDetails(function (server, client, client2) {
           var self = this;
-          client.emit('query', {
-            name : client.name
-          }, this.callback);
+          client.emit('query', {name : client.name}, function onDetails (err, details) {
+            self.callback(err, details, server, client, client2);
+          });
       }),
       "about the *server* by *name*": checkDetails(function (server, client, client2) {
           var self = this;
-          client.emit('query', {
-            name : server.name
-          }, this.callback);
+          client.emit('query', {name : server.name}, function onDetails (err, details) {
+            self.callback(err, details, server, client, client2);
+          });
       }),
       "about all hooks of type *test*": checkMultipleDetails(function (server, client, client2) {
           var self = this;
-          client.emit('query', {
-            type : 'test'
-          }, this.callback);
+          client.emit('query', {type : 'test'}, function onDetails (err, details) {
+            self.callback(err, details, server, client, client2);
+          });
       }, ['server','client1']),
       "about all hooks on host *127.0.0.1*": checkMultipleDetails(function (server, client, client2) {
           var self = this;
-          client.emit('query', {
-            host : '127.0.0.1'
-          }, this.callback);
+          client.emit('query', {host : '127.0.0.1'}, function onDetails (err, details) {
+            self.callback(err, details, server, client, client2);
+          });
       }, ['server','client1', 'another-client']),
-      "about all hooks on host *127.0.0.1*": checkMultipleDetails(function (err, server, client, client2) {
+      "about all hooks on host *localhost*": checkMultipleDetails(function (server, client, client2) {
           var self = this;
-          client.emit('query', {
-            host : '127.0.0.1'
-          }, this.callback);
-    "and the *server hook* emits *query* asking for details": {
-          server.emit('query', {
-            name : server.name
-          }, function (err, details) {
+          client.emit('query', {host : 'localhost'}, function onDetails (err, details) {
+            self.callback(err, details, server, client, client2);
           });
       }, ['server','client1', 'another-client'])
     }

@@ -16,8 +16,8 @@ macros.assertListen = function (name, port, vows) {
   var context = {
     topic: function () {
       var instance = new Hook({ name: name });
-      instance.on('hook::listening', this.callback.bind(instance, null, instance));
-      instance.listen({ "hook-port": port });
+      instance.once('hook::listening', this.callback.bind(instance, null, instance));
+      instance.listen({ "hook-host":'127.0.0.1', "hook-port": port });
     },
     "it should fire the `hook::listening` event": function () {
       assert.equal(this.event, 'hook::listening');      
