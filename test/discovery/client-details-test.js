@@ -15,19 +15,14 @@ vows.describe('hook.io/discovery/client-details').addBatch({
     topic : function() {
       var server = new Hook({name:'server', type: 'test'});
       var self = this;
-
-server.onAny(function(data) {console.log( server.name.red, 'onAny'.red, '[', server.event.rainbow, ']', 'data'.green, data)});
       
       server.on('hook::listening', function() {
         var client1 = new Hook({ name: 'client1', type: 'test'});
         client1.start({"hook-port":5011});
 
-client1.onAny(function(data) {console.log( client1.name.green, 'onAny'.red, '[', client1.event.rainbow, ']', 'data'.green, data)});
-
         var client2 = new Hook({ name: 'spawner-client', type: 'spawner'});
 
         client2.start({"hook-port":5011});
-client2.onAny(function(data) {console.log( client2.name.cyan, 'onAny'.red, '[', client2.event.rainbow, ']', 'data'.green, data)});
 
         client2.spawn([
           {
@@ -40,7 +35,8 @@ client2.onAny(function(data) {console.log( client2.name.cyan, 'onAny'.red, '[', 
             name: 'spawned-client-b',
             port: 5011
           }
-        ], function onReady (err) {
+        ]);
+        client2.on('hook::ready', function onReady (err) {
           self.callback(err, server, client1, client2);        // should add a timeout using addTimeout for handling errors ?
         });
       });
