@@ -46,24 +46,24 @@ vows.describe('hook.io/discovery/client-details').addBatch({
       "about *itself* by *name*": checkDetails(function (server, client, client2) {
           var self = this;
           server.emit('query', {name : server.name}, function onDetails (err, details) {
-console.log('onDetails'.magenta, arguments)
+            console.log('onDetails'.magenta, arguments);
             self.callback(err, details, server, client, client2);
           });
       }),
-			"about *the 1st client* by *name*": checkDetails(function (server, client, client2) {
+      "about *the 1st client* by *name*": checkDetails(function (server, client, client2) {
           var self = this;
-					server.emit('query', {name : client.name}, function onDetails (err, details) {
+          server.emit('query', {name : client.name}, function onDetails (err, details) {
             self.callback(err, details, server, client, client2);
           });
       }),
-			"about *the 2nd client* by *name*": checkDetails(function (server, client, client2) {
+      "about *the 2nd client* by *name*": checkDetails(function (server, client, client2) {
           var self = this;
           server.emit('query', {name : client2.name}, function onDetails (err, details) {
             self.callback(err, details, server, client, client2);
           });
       })
     },
-		"and a *client hook* emits *query* asking for details": {
+    "and a *client hook* emits *query* asking for details": {
       "about *itself* by *name*": checkDetails(function (server, client, client2) {
           var self = this;
           client.emit('query', {name : client.name}, function onDetails (err, details) {
@@ -95,7 +95,7 @@ console.log('onDetails'.magenta, arguments)
           });
       }, ['server','client1', 'another-client'])
     }
-	}
+  }
 }).export(module);
 
 

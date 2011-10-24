@@ -36,13 +36,12 @@ var macro = function(event, port){
         server.emit('foo::response.' + event, data);
       });
 
-      messager.once('*::response.' + event, this.callback.bind(server, null));
+      messager.once('*::foo::response.' + event, this.callback.bind(server, null));
 
       messager.once('hook::connected', function () {
         messager.emit(event, {content: fixture});
       });
       messager.connect({ 'hook-port': port });
-
     }
   };
 
@@ -68,12 +67,9 @@ macro.multipleSubscriber = function(prefix, count) {
         if(--length === 0) self.callback();
       });
       listener.connect({ 'hook-port': 5052 });
-
     },
 
-    "should be able to listen each of the emitted event": function() {
-      assert.ok(true);
-    }
+    "should be able to listen each of the emitted event": function() {}
   };
 
   while(--test) {
@@ -86,7 +82,7 @@ macro.multipleSubscriber = function(prefix, count) {
 
 // Start the batch with a with a predefined number of cycles
 vows.describe('hook.io/siblings/multiple-message').addBatch({
-  "When a hook is listening on 5050": macros.assertListen('simple-server', 5052, {
+  "When a hook is listening on 5052": macros.assertListen('simple-server', 5052, {
     "and another hooks connects": macro.multipleSubscriber('test::foo::', 10)
   })
 }).export(module);
