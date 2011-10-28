@@ -103,7 +103,7 @@ macros.assertHelloWorld = function (local) {
       },
       "should emit helloworld": function (_, message) {
         assert.equal(this.event, 'helloworld::hello');
-        assert.equal(message, 'Hello, I am helloworld');
+        assert.equal(message, 'Hello, I am \033[1m\033[34mhelloworld\033[39m\033[22m');
         
         if (this.children['helloworld'].monitor) {
           this.children['helloworld'].monitor.stop();
